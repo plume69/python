@@ -1,0 +1,80 @@
+
+# coding: utf-8
+
+# In[2]:
+
+import pyspark
+
+
+# In[3]:
+
+sc = pyspark.SparkContext('local[*]')
+
+
+# In[4]:
+
+rdd = sc.parallelize(range(1000))
+rdd.takeSample(False,5)
+
+
+# In[5]:
+
+import scipy
+
+
+# In[6]:
+
+data = []
+
+
+# In[7]:
+
+for xx in range (1,9001):
+    data = data+[xx]
+
+
+# In[8]:
+
+print(data)
+
+
+# In[11]:
+
+rDD = sc.parallelize(data,4)
+
+
+# In[12]:
+
+mapRdd5 = rDD.filter(lambda x:x%5 == 0)
+mapRdd3 = rDD.filter(lambda x:x%3 == 0)
+mapmix =mapRdd3+mapRdd5
+
+
+# In[13]:
+
+print (mapRdd5.collect())
+
+
+# In[14]:
+
+print (mapmix.count())
+
+
+# In[16]:
+
+redd3= mapRdd3.reduce(lambda a,b:a+b)/mapRdd3.count()
+redd5= mapRdd5.reduce(lambda a,b:a+b)/mapRdd5.count()
+reddmix= mapmix.reduce(lambda a,b:a+b)/mapmix.count()
+
+
+# In[17]:
+
+print (redd3)
+print (redd5)
+print (reddmix)
+
+
+# In[ ]:
+
+
+
